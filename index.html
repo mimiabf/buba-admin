@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Buba — Admin</title>
+<style>
+  :root {
+    --primary: #FF245D;
+    --primary-soft: #FFF0F4;
+    --cream: #F7F3EE;
+    --text: #2B2B2B;
+    --text-2: #6E6E6E;
+    --petrol: #1F6F78;
+    --danger: #D64545;
+    --ok: #2E9E5B;
+    --warn: #B8860B;
+    --card: #FFFFFF;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 24px 20px 60px; }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  h1 { color: var(--primary); font-size: 26px; margin: 0; }
+  h2 { font-size: 17px; margin: 28px 0 12px; }
+  .muted { color: var(--text-2); font-size: 13px; }
+  button {
+    font: inherit; border: none; border-radius: 10px; padding: 9px 16px;
+    cursor: pointer; font-weight: 600;
+  }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-ghost { background: transparent; color: var(--text-2); }
+  .btn-ok { background: var(--ok); color: #fff; }
+  .btn-danger { background: #fff; color: var(--danger); border: 1.5px solid var(--danger); }
+  .btn-file { background: var(--primary-soft); color: var(--primary); }
+  button:disabled { opacity: .5; cursor: default; }
+
+  /* Login */
+  .login {
+    max-width: 380px; margin: 10vh auto 0; background: var(--card);
+    border-radius: var(--radius); padding: 28px; box-shadow: 0 8px 28px rgba(0,0,0,.07);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .login input {
+    font: inherit; padding: 11px 12px; border-radius: 10px;
+    border: 1.5px solid #E4DED6; background: #FBFAF8;
+  }
+  .login input:focus { outline: none; border-color: var(--primary); }
+  .error { color: var(--danger); font-size: 13px; min-height: 16px; }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .stat {
+    background: var(--card); border-radius: var(--radius); padding: 16px 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.05);
+  }
+  .stat b { display: block; font-size: 28px; }
+  .stat span { font-size: 13px; color: var(--text-2); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,.05); }
+  th, td { text-align: left; padding: 11px 14px; font-size: 14px; }
+  th { background: var(--primary-soft); color: var(--primary); font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+  tr + tr td { border-top: 1px solid #F0EBE3; }
+  td .sub { font-size: 12px; color: var(--text-2); }
+  .dogcell { display: flex; align-items: center; gap: 10px; }
+  .dogcell img, .dogcell .noimg {
+    width: 38px; height: 38px; border-radius: 50%; object-fit: cover;
+    background: var(--primary-soft); display: flex; align-items: center; justify-content: center;
+  }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .b-ok { background: #E4F5EB; color: var(--ok); }
+  .b-pending { background: #FFF6DE; color: var(--warn); }
+  .b-none { background: #EEE9E1; color: var(--text-2); }
+  .b-rejected { background: #FBE4E4; color: var(--danger); }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: #fff; padding: 10px 20px; border-radius: 10px;
+    font-size: 14px; opacity: 0; transition: opacity .25s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+  #dashboard { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- Login -->
+  <div class="login" id="login">
+    <h1>Buba 🐾 Admin</h1>
+    <p class="muted">Réservé aux administrateurs. Connecte-toi avec ton compte Buba.</p>
+    <input id="email" type="email" placeholder="E-mail" autocomplete="username" />
+    <input id="password" type="password" placeholder="Mot de passe" autocomplete="current-password" />
+    <div class="error" id="login-error"></div>
+    <button class="btn-primary" id="btn-login">Se connecter</button>
+    <button class="btn-ghost" id="btn-signup">Créer mon compte admin</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <header>
+      <h1>Buba 🐾 Admin</h1>
+      <div>
+        <span class="muted" id="whoami"></span>
+        <button class="btn-ghost" id="btn-refresh">↻ Rafraîchir</button>
+        <button class="btn-ghost" id="btn-logout">Se déconnecter</button>
+      </div>
+    </header>
+
+    <div class="stats" id="stats"></div>
+
+    <h2>Carnets en attente de validation</h2>
+    <div id="pending"></div>
+
+    <h2>Toutes les inscriptions</h2>
+    <div id="signups"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL = 'https://opubswjqusfoxpksueoi.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wdWJzd2pxdXNmb3hwa3N1ZW9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNzM5MjcsImV4cCI6MjA5ODc0OTkyN30.hFATNrKtUrNMT5sFS82yW2d9sf_OyXuloV9oYvKuKys';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = (id) => document.getElementById(id);
+
+const STATUS_LABELS = {
+  verified: ['Validé', 'b-ok'],
+  pending_verification: ['En attente', 'b-pending'],
+  up_to_date: ['Déclaré (non vérifié)', 'b-none'],
+  not_provided: ['Pas de carnet', 'b-none'],
+  expired: ['Expiré', 'b-rejected'],
+  rejected: ['Refusé', 'b-rejected'],
+};
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
+async function login() {
+  $('login-error').textContent = '';
+  const { error } = await supabase.auth.signInWithPassword({
+    email: $('email').value.trim(),
+    password: $('password').value,
+  });
+  if (error) { $('login-error').textContent = error.message; return; }
+  await enter();
+}
+
+async function signup() {
+  $('login-error').textContent = '';
+  const { error } = await supabase.auth.signUp({
+    email: $('email').value.trim(),
+    password: $('password').value,
+  });
+  if (error) { $('login-error').textContent = error.message; return; }
+  await enter();
+}
+
+async function enter() {
+  const { data } = await supabase.auth.getSession();
+  if (!data.session) return;
+  $('whoami').textContent = data.session.user.email + ' · ';
+  try {
+    await load();
+  } catch (e) {
+    $('login-error').textContent = e.message.includes('admin only')
+      ? 'Ce compte n’est pas administrateur.'
+      : e.message;
+    await supabase.auth.signOut();
+    return;
+  }
+  $('login').style.display = 'none';
+  $('dashboard').style.display = 'block';
+}
+
+async function load() {
+  const { data, error } = await supabase.rpc('admin_signups');
+  if (error) throw new Error(error.message);
+  render(data ?? []);
+}
+
+function render(rows) {
+  const pending = rows.filter((r) => r.vaccinated_status === 'pending_verification');
+  const validated = rows.filter((r) => r.validated);
+  const withProfile = rows.filter((r) => r.dog_name);
+
+  $('stats').innerHTML = `
+    <div class="stat"><b>${rows.length}</b><span>Inscriptions</span></div>
+    <div class="stat"><b>${withProfile.length}</b><span>Profils complets</span></div>
+    <div class="stat"><b>${validated.length}</b><span>Validés</span></div>
+    <div class="stat"><b>${pending.length}</b><span>Carnets en attente</span></div>
+  `;
+
+  $('pending').innerHTML = pending.length
+    ? tableOf(pending, true)
+    : '<p class="muted">Aucun carnet en attente. 🎉</p>';
+  $('signups').innerHTML = tableOf(rows, false);
+
+  document.querySelectorAll('[data-view]').forEach((b) =>
+    b.addEventListener('click', () => viewFile(b.dataset.view)));
+  document.querySelectorAll('[data-approve]').forEach((b) =>
+    b.addEventListener('click', () => review(b.dataset.approve, true, b.dataset.name)));
+  document.querySelectorAll('[data-reject]').forEach((b) =>
+    b.addEventListener('click', () => review(b.dataset.reject, false, b.dataset.name)));
+}
+
+function tableOf(rows, withActions) {
+  const body = rows.map((r) => {
+    const [label, cls] = STATUS_LABELS[r.vaccinated_status] ?? ['—', 'b-none'];
+    const dog = r.dog_name
+      ? `<div class="dogcell">
+           ${r.dog_photo && r.dog_photo.startsWith('http')
+             ? `<img src="${esc(r.dog_photo)}" alt="" />`
+             : '<div class="noimg">🐾</div>'}
+           <div>${esc(r.dog_name)}<div class="sub">${esc(r.dog_breed ?? '')}</div></div>
+         </div>`
+      : '<span class="muted">Onboarding incomplet</span>';
+    const actions = withActions
+      ? `<div class="actions">
+           <button class="btn-file" data-view="${esc(r.vaccination_file_url ?? '')}">Voir carnet</button>
+           <button class="btn-ok" data-approve="${r.dog_id}" data-name="${esc(r.dog_name)}">Valider</button>
+           <button class="btn-danger" data-reject="${r.dog_id}" data-name="${esc(r.dog_name)}">Refuser</button>
+         </div>`
+      : `<span class="badge ${r.dog_name ? cls : 'b-none'}">${r.dog_name ? label : '—'}</span>`;
+    return `<tr>
+      <td>${esc(r.owner_name ?? '—')}<div class="sub">${esc(r.email)}${r.is_admin ? ' · admin' : ''}</div></td>
+      <td>${dog}</td>
+      <td>${esc(r.city ?? '—')}</td>
+      <td>${new Date(r.signed_up_at).toLocaleDateString('fr-FR')}</td>
+      <td>${r.active_matches}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join('');
+  return `<table>
+    <thead><tr><th>Maître</th><th>Chien</th><th>Ville</th><th>Inscrit le</th><th>Matchs</th><th>${withActions ? 'Actions' : 'Statut carnet'}</th></tr></thead>
+    <tbody>${body}</tbody>
+  </table>`;
+}
+
+async function viewFile(fileUrl) {
+  const marker = '/vaccination-records/';
+  const i = fileUrl.indexOf(marker);
+  if (i === -1) { toast('Pas de fichier exploitable.'); return; }
+  const path = decodeURIComponent(fileUrl.slice(i + marker.length));
+  const { data, error } = await supabase.storage
+    .from('vaccination-records').createSignedUrl(path, 3600);
+  if (error) { toast(error.message); return; }
+  window.open(data.signedUrl, '_blank');
+}
+
+async function review(dogId, approve, name) {
+  if (!confirm(`${approve ? 'Valider' : 'Refuser'} le carnet de ${name} ?`)) return;
+  const { error } = await supabase.rpc('admin_review_vaccination', {
+    p_dog_id: dogId,
+    p_approve: approve,
+  });
+  if (error) { toast(error.message); return; }
+  toast(`${name} ${approve ? 'validé ✓' : 'refusé'}`);
+  await load();
+}
+
+$('btn-login').addEventListener('click', login);
+$('btn-signup').addEventListener('click', signup);
+$('btn-refresh').addEventListener('click', () => load().then(() => toast('À jour')));
+$('btn-logout').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  location.reload();
+});
+$('password').addEventListener('keydown', (e) => { if (e.key === 'Enter') login(); });
+
+enter(); // auto-login if a session is stored
+</script>
+</body>
+</html>
