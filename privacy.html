@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Buba — Politique de confidentialité</title>
+<style>
+  :root {
+    --primary: #FF245D;
+    --primary-soft: #FFF0F4;
+    --cream: #F7F3EE;
+    --text: #2B2B2B;
+    --text-2: #6E6E6E;
+    --card: #FFFFFF;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+  }
+  .card {
+    max-width: 720px; margin: 5vh auto 60px; background: var(--card);
+    border-radius: var(--radius); padding: 36px; box-shadow: 0 8px 28px rgba(0,0,0,.07);
+  }
+  h1 { color: var(--primary); font-size: 26px; margin: 0 0 2px; }
+  h2 { font-size: 18px; margin: 28px 0 8px; }
+  p, li { font-size: 14.5px; line-height: 1.6; }
+  ul { padding-left: 20px; }
+  .muted { color: var(--text-2); font-size: 13px; }
+  a { color: var(--primary); }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; vertical-align: top; }
+  th { background: var(--primary-soft); color: var(--primary); font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+  tr + tr td { border-top: 1px solid #F0EBE3; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Buba 🐾</h1>
+  <p><b>Politique de confidentialité</b></p>
+  <p class="muted">Dernière mise à jour : 13 juillet 2026</p>
+
+  <p>Buba est une application de rencontres entre chiens (et leurs humains).
+  Cette politique explique quelles données nous collectons, pourquoi, et quels
+  sont tes droits. En bref : nous ne collectons que ce qui est nécessaire au
+  fonctionnement de l'app, nous ne vendons jamais tes données, et il n'y a
+  aucune publicité.</p>
+
+  <h2>1. Responsable du traitement</h2>
+  <p>L'application Buba est éditée par Mariam Abouelfadel.
+  Pour toute question relative à tes données :
+  <a href="mailto:labobymimi@gmail.com">labobymimi@gmail.com</a>.</p>
+
+  <h2>2. Données collectées</h2>
+  <ul>
+    <li><b>Compte</b> : adresse e-mail, mot de passe (stocké chiffré, jamais lisible par nous).</li>
+    <li><b>Profil du maître</b> : prénom ou pseudo, genre (optionnel), âge, courte bio, photo (optionnelle), ville et position <b>approximative</b>.</li>
+    <li><b>Profil du chien</b> : nom, race, âge, sexe, taille, caractère, description, photos, statut de stérilisation.</li>
+    <li><b>Vérification</b> : carnet de vaccination (photo ou PDF) et selfie du chien pris en direct, utilisés uniquement pour vérifier le profil.</li>
+    <li><b>Activité</b> : likes, matchs, messages échangés, signalements et blocages.</li>
+    <li><b>Technique</b> : jeton de notification push de ton appareil (si tu acceptes les notifications).</li>
+  </ul>
+
+  <h2>3. Localisation</h2>
+  <p>Buba utilise ta position <b>approximative</b> uniquement pour te montrer
+  les chiens à proximité et afficher une distance. Ton adresse exacte n'est
+  jamais collectée, stockée ni montrée aux autres utilisateurs. Tu peux
+  refuser la localisation dans les réglages de ton téléphone.</p>
+
+  <h2>4. Pourquoi nous utilisons tes données</h2>
+  <table>
+    <tr><th>Finalité</th><th>Base légale</th></tr>
+    <tr><td>Créer ton compte, afficher les profils, permettre les matchs et le chat</td><td>Exécution du contrat (fournir le service)</td></tr>
+    <tr><td>Vérifier le carnet de vaccination et le selfie du chien (sécurité et confiance entre utilisateurs)</td><td>Intérêt légitime</td></tr>
+    <tr><td>Te montrer les chiens proches de toi</td><td>Consentement (permission de localisation)</td></tr>
+    <tr><td>T'envoyer des notifications (nouveau match, message, profil validé)</td><td>Consentement (permission de notifications)</td></tr>
+    <tr><td>Traiter les signalements et blocages</td><td>Intérêt légitime (sécurité des utilisateurs)</td></tr>
+  </table>
+
+  <h2>5. Avec qui tes données sont partagées</h2>
+  <p>Tes données ne sont <b>jamais vendues</b> et ne servent à aucune publicité.
+  Elles sont traitées par les sous-traitants techniques suivants :</p>
+  <table>
+    <tr><th>Service</th><th>Rôle</th><th>Localisation</th></tr>
+    <tr><td>Supabase</td><td>Hébergement de la base de données, des photos et de l'authentification</td><td>Union européenne (Paris)</td></tr>
+    <tr><td>Google (Gemini)</td><td>Analyse automatisée du carnet de vaccination et du selfie de vérification</td><td>États-Unis — transfert encadré par des clauses contractuelles types</td></tr>
+    <tr><td>Google (Firebase) &amp; Expo</td><td>Envoi des notifications push</td><td>États-Unis — clauses contractuelles types</td></tr>
+    <tr><td>Brevo</td><td>Envoi des e-mails de confirmation et de réinitialisation</td><td>Union européenne</td></tr>
+  </table>
+  <p>Les autres utilisateurs voient uniquement : ton prénom/pseudo, ton âge, ta
+  bio, tes photos, le profil de ton chien, ta ville et une distance approximative.
+  Ils ne voient jamais ton e-mail, ta position précise, ton carnet de
+  vaccination ni ton selfie de vérification.</p>
+
+  <h2>6. Durée de conservation</h2>
+  <p>Tes données sont conservées tant que ton compte existe. Si tu supprimes
+  ton compte, <b>tout est effacé immédiatement et définitivement</b> : profils,
+  photos, carnet, selfie, matchs et messages. Aucune copie n'est conservée.</p>
+
+  <h2>7. Supprimer ton compte</h2>
+  <ul>
+    <li>Dans l'app : <b>Réglages → Supprimer mon compte</b>.</li>
+    <li>Sur le web : <a href="https://mimiabf.github.io/buba-admin/delete-account.html">page de suppression de compte</a>.</li>
+    <li>Par e-mail : <a href="mailto:labobymimi@gmail.com?subject=Suppression%20de%20mon%20compte%20Buba">labobymimi@gmail.com</a> (traitement sous 30 jours).</li>
+  </ul>
+
+  <h2>8. Tes droits</h2>
+  <p>Conformément au RGPD, tu disposes d'un droit d'accès, de rectification,
+  d'effacement, de portabilité, de limitation et d'opposition sur tes données.
+  Pour les exercer, écris-nous à
+  <a href="mailto:labobymimi@gmail.com">labobymimi@gmail.com</a>.
+  Tu peux aussi introduire une réclamation auprès de la CNIL
+  (<a href="https://www.cnil.fr">cnil.fr</a>).</p>
+
+  <h2>9. Sécurité</h2>
+  <p>Toutes les communications sont chiffrées (TLS). L'accès aux données est
+  restreint par des règles de sécurité au niveau de la base de données : chaque
+  utilisateur n'accède qu'à ses propres données et aux profils publics. Les
+  carnets de vaccination sont stockés dans un espace privé, accessible
+  uniquement à toi et à l'équipe de validation.</p>
+
+  <h2>10. Âge minimum</h2>
+  <p>Buba est réservée aux personnes majeures (18 ans et plus).</p>
+
+  <h2>11. Modifications</h2>
+  <p>Cette politique peut évoluer avec l'application. La date de dernière mise
+  à jour figure en haut de cette page ; en cas de changement important, tu en
+  seras informée dans l'app.</p>
+</div>
+</body>
+</html>
